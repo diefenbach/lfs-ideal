@@ -1,0 +1,39 @@
+--- eggs/django_lfs-0.6.0b5-py2.7.egg/lfs/checkout/views.py.orig    2011-11-26 13:28:25.000000000 +0100
++++ eggs/django_lfs-0.6.0b5-py2.7.egg/lfs/checkout/views.py 2011-11-26 13:30:29.000000000 +0100
+@@ -37,6 +37,7 @@
+ from lfs.payment.settings import CREDIT_CARD
+ from lfs.voucher.models import Voucher
+ from lfs.voucher.settings import MESSAGES
++from ideal.models import IdealDirectory, IdealIssuer
+ 
+ # other imports
+ from postal.library import form_factory
+@@ -348,6 +349,8 @@
+ 
+     display_bank_account = DIRECT_DEBIT in valid_payment_method_ids
+     display_credit_card = CREDIT_CARD in valid_payment_method_ids
++    ideal_directory = IdealDirectory.objects.latest('directory_timestamp')
++
+ 
+     response = render_to_response(template_name, RequestContext(request, {
+         "form": form,
+@@ -360,6 +363,7 @@
+         "display_bank_account": display_bank_account,
+         "display_credit_card": display_credit_card,
+         "voucher_number": lfs.voucher.utils.get_current_voucher_number(request),
++        "ideal_issuers": IdealIssuer.objects.filter(directory=ideal_directory),
+     }))
+ 
+     if form._errors:
+--- eggs/django_lfs-0.6.0b5-py2.7.egg/lfs/payment/utils.py.orig 2011-11-26 13:28:52.000000000 +0100
++++ eggs/django_lfs-0.6.0b5-py2.7.egg/lfs/payment/utils.py  2011-11-26 13:31:45.000000000 +0100
+@@ -109,6 +109,9 @@
+         module = lfs.core.utils.import_module(payment_method.module + ".views")
+         result = module.process(request)
+         if result["accepted"] == True:
++            if payment_method.module in 'ideal':
++                # if we pay with ideal, the magic is happening somewhere else
++                return result
+             order = lfs.order.utils.add_order(request)
+             # TODO: this has to be returned from the module
+             order.state = PAID

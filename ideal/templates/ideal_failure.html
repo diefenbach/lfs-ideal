@@ -1,0 +1,18 @@
+{% extends "../../jeansconcurrent_theme/templates/lfs/base.html" %}
+{% load lfs_tags %}
+{% load lfs_portlets_tags %}
+
+{% block section %}page{% endblock %}
+
+{% block left-slot %}
+    {% lfs_pages_portlet %}
+{% endblock %}
+
+{% block content %}
+
+<h1>De betaling is niet gelukt.</h1>
+
+<p>{{ status }} We gaan kijken wat er mis is gegaan en nemen contact met je op via het e-mailadres</p>
+
+{% endblock %}
+

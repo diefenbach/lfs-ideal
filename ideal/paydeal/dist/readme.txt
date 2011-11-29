@@ -1,0 +1,1 @@
+for the latest documentation visit: http://www.paydeal.nl/

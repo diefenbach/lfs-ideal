@@ -1,0 +1,20 @@
+{% extends "../../jeansconcurrent_theme/templates/lfs/base.html" %}
+{% load lfs_tags %}
+{% load lfs_portlets_tags %}
+
+{% block section %}page{% endblock %}
+
+{% block left-slot %}
+    {% lfs_pages_portlet %}
+{% endblock %}
+
+{% block content %}
+
+<h1>Bedankt!</h1>
+
+<p>Uw betaling van <b>{{ amount }}</b> voor ordernummer <b>{{ order.id }}</b> is geslaagd.</p>
+<p>We hebben een bevestiging naar uw e-mailadres gestuurd.</p>
+
+<p>Status: {{ trx.get_status_display }} {{ trx.status }}</p>
+{% endblock %}
+
