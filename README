@@ -1,1 +1,12 @@
 Ideal module for LFS shop
+
+Instructions:
+
+* Install LFS
+* Move the ideal directory into your project directory
+* Include it in the INSTALLED_APPS in settings.py
+* Generate the needed certificates and put them in the /includes/ directory (see www.paydeal.nl)
+* Run the apply_patch.sh (currently working with version 0.6.0b5
+* Modify the templates if needed, currently in Dutch only
+
+Good luck!
